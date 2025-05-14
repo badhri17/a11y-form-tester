@@ -1,0 +1,37 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A11y‑Form‑Tester Report</title>
+    <style>
+      body{font-family:sans-serif;max-width:900px;margin:2rem auto;padding:0
+      1rem} h2{margin-top:2rem} .page{border-bottom:1px solid #ccc;padding:1rem
+      0} .violation{margin-left:1rem} .fail{color:#d00}
+    </style>
+  </head>
+  <body>
+    <h1>Accessibility Scan</h1>
+    {{#each pages}}
+      <div class="page">
+        <h2>{{file}}
+          –
+          <span class="fail">{{violations.length}} issues</span></h2>
+        <ul>
+          {{#each violations}}
+            <li class="rule"><strong>{{id}}</strong>
+              ({{impact}})
+              <ul>
+                {{#each nodes}}
+                  <li class="node">
+                    <code>{{{this.html}}}</code><br />
+                    <small>{{this.target}}</small>
+                  </li>
+                {{/each}}
+              </ul>
+            </li>
+          {{/each}}
+        </ul>
+
+      </div>
+    {{/each}}
+  </body>
+</html>

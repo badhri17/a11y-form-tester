@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Modal without accessible name</title>
+  <style>
+    #modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .panel { background:#fff; padding:2rem; width:300px; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+
+<button id="open-login" data-a11y-modal="open">Open login modal</button>
+
+<script>
+document.querySelector('#open-login').addEventListener('click', () => {
+  // 🚫 Developer forgets aria-label / aria-labelledby
+  const wrapper = document.createElement('div');
+  wrapper.id = 'modal';
+  wrapper.setAttribute('role', 'dialog');         //  <- needs a name
+  wrapper.innerHTML = `
+    <div class="panel">
+      <button data-close>×</button>
+      <h2>Login</h2>
+      <label>Email <input type="email" required></label><br>
+      <label>Password <input type="password" required></label><br>
+      <button>Submit</button>
+    </div>`;
+  document.body.appendChild(wrapper);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Interactive contrast failure</title>
+  <style>
+    /* Light-pink text on white → contrast ratio ≈ 1.6:1 (fails WCAG AA) */
+    .error {
+      color: #ffb6c1;      /* lightpink */
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<form id="signup">
+  <!-- Correctly labelled; static scan is happy -->
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email" >
+  
+  <!-- Hidden until the JS validator runs -->
+  <div id="erremail" class="error" hidden>
+    Please enter a valid email address
+  </div>
+
+  <button type="submit">Sign up</button>
+</form>
+
+<script>
+/* Simple client-side validator */
+signup.addEventListener('submit', e => {
+  e.preventDefault();
+  if (!email.value.match(/.+@.+\..+/)) {
+    document.querySelector('#erremail').hidden = false;         // 💥 light-pink text becomes visible
+    email.setAttribute('aria-invalid', 'true');
+    /* No aria-errormessage needed for this demo */
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dynamic field with bad autocomplete</title>
+  <style>
+    .hidden { display:none }
+    .field  { margin-bottom:1rem }
+  </style>
+</head>
+<body>
+
+<form id="signup" novalidate>
+  <div class="field">
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="email" required>
+  </div>
+
+  <!-- trigger -->
+  <div class="field">
+    <input id="biz" type="checkbox">
+    <label for="biz">I’m registering a business</label>
+  </div>
+
+  <!-- appears only when the box is ticked -->
+  <div id="vat-block" class="hidden">
+    <label for="vat">VAT / Tax ID</label>
+    <!-- 🚫 illegitimate token 'tax-id' -->
+    <input id="vat" autocomplete="tax-id" required>
+  </div>
+
+  <button>Continue</button>
+</form>
+
+<script>
+  const biz = document.getElementById('biz');
+  const vatBlock = document.getElementById('vat-block');
+  biz.addEventListener('change', e => {
+    vatBlock.classList.toggle('hidden', !e.target.checked);
+  });
+</script>
+</body>
+</html>

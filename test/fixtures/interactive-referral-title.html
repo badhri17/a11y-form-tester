@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dynamic referral code input</title>
+  <style>
+    .field  { margin-bottom:1rem }
+    .hidden { display:none }
+  </style>
+</head>
+<body>
+
+<form id="checkout" novalidate>
+  <div class="field">
+    <label for="email">Email</label>
+    <input id="email" type="email" required>
+  </div>
+
+  <!-- trigger -->
+  <div class="field">
+    <input id="have-ref" type="checkbox">
+    <label for="have-ref">I have a referral code</label>
+  </div>
+
+  <!-- dynamic referral input -->
+  <div id="ref-slot"></div>
+
+  <button>Pay</button>
+</form>
+
+<script>
+const haveRef = document.getElementById('have-ref');
+const refSlot = document.getElementById('ref-slot');
+
+haveRef.addEventListener('change', e => {
+  if (e.target.checked) {
+    refSlot.innerHTML = `
+      <input id="ref" title="Referral code" required >
+    `;
+  } else {
+    refSlot.innerHTML = '';
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Icon-only button injected later</title>
+  <style>
+    .field  { margin-bottom:1rem }
+    .fab    { border:0;background:none;cursor:pointer;padding:0 }
+    .fab svg{ width:24px;height:24px; }
+  </style>
+</head>
+<body>
+
+<form id="todo" novalidate>
+  <div class="field">
+    <label><input id="agree" type="checkbox"> I understand how this works</label>
+  </div>
+
+  <!-- Button appears only when the box is ticked -->
+  <div id="fab-slot"></div>
+
+  <button>Submit</button>
+</form>
+
+<script>
+const agree = document.querySelector('#agree');
+const fabSlot = document.getElementById('fab-slot');
+
+agree.addEventListener('change', e => {
+  if (e.target.checked) {
+    /* 🚫 Inject icon-only button WITHOUT aria-label or text */
+    fabSlot.innerHTML = `
+      <button class="fab">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>`;
+  } else {
+    fabSlot.innerHTML = '';
+  }
+});
+</script>
+</body>
+</html>

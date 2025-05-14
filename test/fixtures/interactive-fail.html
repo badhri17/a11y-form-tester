@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Interactive-only failure</title>
+</head>
+<body>
+<form id="signup">
+  <!-- good labels → static scan passes -->
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email">
+
+  <!-- error text starts hidden -->
+  <span id="err-email" hidden>Please enter a valid email address.</span>
+
+  <label for="password">Password</label>
+  <input id="password" name="password" type="password" required>
+  <span id="err-pass" hidden>Password must be 8 chars +</span>
+
+  <button>Sign up</button>
+</form>
+
+<script>
+  /** JavaScript validator: shows errors but FORGETS aria-errormessage */
+  signup.addEventListener('submit', e => {
+    e.preventDefault();
+
+    // Email check
+    if (!email.value.match(/.+@.+\..+/)) {
+      errEmail.hidden = false;
+      email.setAttribute('aria-invalid', 'true');
+      // ❌ aria-errormessage link is missing here
+    }
+
+    // Password check
+    if (password.value.length < 8) {
+      errPass.hidden = false;
+      password.setAttribute('aria-invalid', 'true');
+      // ❌ also missing aria-errormessage
+    }
+  });
+</script>
+</body>
+</html>

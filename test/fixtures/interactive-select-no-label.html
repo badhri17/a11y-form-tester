@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hidden <select> without label</title>
+  <style>
+    .hidden { display: none; }
+    .field  { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+
+<form id="signup" novalidate>
+  <div class="field">
+    <label for="name">Full name</label>
+    <input id="name" required>
+  </div>
+
+  <div class="field">
+    <input id="is-biz" type="checkbox">
+    <label for="is-biz">I’m registering a business</label>
+  </div>
+
+  <!-- JS reveals this block when the checkbox is ticked -->
+  <div id="biz-extra" class="hidden">
+    <!-- ❌ No label for the new <select> -->
+    <select id="country" required>
+      <option value="">Choose country…</option>
+      <option>Saudi Arabia</option>
+      <option>United States</option>
+      <option>China</option>
+    </select>
+  </div>
+
+  <button>Submit</button>
+</form>
+
+<script>
+/* Reveal extra fields when the user ticks the box */
+document.querySelector('#signup').addEventListener('change', (e) => {
+  if (e.target.id === 'is-biz') {
+     document.querySelector('#biz-extra').classList.toggle('hidden', !e.target.checked);
+  }
+});
+</script>
+</body>
+</html>

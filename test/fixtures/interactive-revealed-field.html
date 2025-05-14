@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hidden field without label</title>
+  <style>
+    .hidden { display: none; }
+    .field  { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+
+<form id="checkout" novalidate>
+  <div class="field">
+    <label for="email">Email</label>
+    <input id="email" type="email" required>
+  </div>
+
+  <div class="field">
+    <input id="has-coupon" type="checkbox">
+    <label for="has-coupon">I have a coupon code</label>
+  </div>
+
+  <!-- JS reveals this block when the checkbox is checked -->
+  <div id="coupon-block" class="field ">
+    <!-- ❌  Missing label  -->
+    <input id="coupon" name="coupon" placeholder="Enter code" required>
+  </div>
+
+  <button>Pay now</button>
+</form>
+
+<script>
+checkout.addEventListener('change', e => {
+  if (e.target.id === 'has-coupon') {
+    document.getElementById('coupon-block').classList.toggle('hidden', !e.target.checked);
+  }
+});
+</script>
+</body>
+</html>

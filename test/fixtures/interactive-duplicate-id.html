@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dynamic duplicate-id bug</title>
+  <style>
+    .field { margin-bottom: 1rem; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+
+<form id="profile" novalidate>
+  <div class="field" id="primary-phone-block">
+    <label for="phone">Primary phone</label>
+    <input id="phone" name="phone" type="tel" required>
+  </div>
+
+  <div class="field">
+    <input id="add-secondary" type="checkbox">
+    <label for="add-secondary">Add a second phone number</label>
+  </div>
+
+  <!-- JS inserts the clone here -->
+  <div id="extra-container"></div>
+
+  <button>Save</button>
+</form>
+
+<script>
+/* Clone the primary block when the box is checked */
+const addSecondary = document.getElementById('add-secondary');
+const primaryPhoneBlock = document.getElementById('primary-phone-block');
+addSecondary.addEventListener('change', e => {
+  if (e.target.checked) {
+    const clone = primaryPhoneBlock.cloneNode(true); // deep copy
+    const label = clone.querySelector('label');
+    const input = clone.querySelector('input');
+    // Assign new id and for attribute
+    label.textContent = 'Secondary phone';
+    label.setAttribute('for', 'secondary-phone');
+    input.value = '';
+    input.id = 'secondary-phone';
+    input.name = 'secondary-phone';
+    document.getElementById('extra-container').appendChild(clone);
+  }
+});
+</script>
+</body>
+</html>
