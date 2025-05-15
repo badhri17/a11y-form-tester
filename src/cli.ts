@@ -7,6 +7,7 @@ program
   .description("Scan forms with Playwright + aXe and interactive scenarios")
   .argument("<glob...>", "Files or URLs to audit")
   .option("-r, --report <html>", "Generate HTML report at given path")
+  .option("-m, --max <number>", "Fail only when more than <number> violations", "0") // Add the max option
   .parse();
 
 const opts = program.opts();
@@ -20,7 +21,13 @@ runAll(files, opts)
       const { HtmlReporter } = await import("./reporters/html.js");
       await new HtmlReporter(opts.report).output(result);
     }
-    if (result.violationCount > 0) process.exit(1);
+    
+    // Check against the max threshold
+    const maxViolations = parseInt(opts.max, 10);
+    if (result.violationCount > maxViolations) {
+      console.log(`Found ${result.violationCount} violations, which exceeds your threshold of ${maxViolations}`);
+      process.exit(1);
+    }
   })
   .catch((e) => {
     console.error(e);
