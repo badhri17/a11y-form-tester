@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "bin": {
-    "a11y-form-tester": "./bin/a11y-form-tester.cjs"
+    "a11y-form-tester": "bin/a11y-form-tester.cjs"
   },
   "main": "./dist/cli.mjs",
   "exports": {
@@ -17,7 +17,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@axe-core/playwright": "^4.10.1",
     "chalk": "^5.4.1",
