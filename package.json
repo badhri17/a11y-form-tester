@@ -1,11 +1,19 @@
 {
   "name": "a11y-form-tester",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "a11y-form-tester": "./bin/a11y-form-tester.cjs"
+  },
+  "main": "./dist/cli.mjs",
+  "exports": {
+    ".": "./dist/cli.mjs"
+  },
   "scripts": {
-    "dev": "pnpm exec tsx src/cli.ts test/fixtures/*.html --report report.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup",
+    "dev": "tsx src/cli.ts test/fixtures/*.html --report report.html",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +22,7 @@
     "@axe-core/playwright": "^4.10.1",
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
+    "fast-glob": "^3.3.3",
     "handlebars": "^4.7.8",
     "playwright": "^1.52.0"
   },
