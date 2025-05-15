@@ -11,5 +11,8 @@ export default defineConfig({
   skipNodeModulesBundle: true, // 🛑  leave every dependency external
   splitting: false, // (optional) single file, easier debug
   outDir: "dist",
+  loader: {
+    ".hbs": "text", // Load .hbs files as plain text
+  },
 });
   

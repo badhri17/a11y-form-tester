@@ -1,26 +1,18 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import templateStr from "../../template/htmlReport.hbs"; // no ?raw once loader is set
 import Handlebars from "handlebars";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 import type { ScanResult } from "../runner/runPage.js";
-import { fileURLToPath } from 'node:url'; 
 
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const tpl = Handlebars.compile(templateStr);
 
 export class HtmlReporter {
   constructor(private out: string) {}
 
   async output(data: { pages: ScanResult[] }) {
-    const tplPath = path.resolve(__dirname, "../../template/htmlReport.hbs"); // Use __dirname
-    // console.log(`[HtmlReporter] Attempting to read template from: ${tplPath}`); // Optional: for debugging template path
-    const tplStr = await fs.readFile(
-      tplPath, // Use the resolved tplPath
-      "utf8"
-    );
-    const template = Handlebars.compile(tplStr);
-    const html = template(data);
-    await fs.mkdir(path.dirname(this.out), { recursive: true });
-    await fs.writeFile(this.out, html, "utf8");
-    console.log("HTML report saved to", this.out); // This log should now appear if successful
+    const html = tpl(data);
+    await mkdir(path.dirname(this.out), { recursive: true });
+    await writeFile(this.out, html, "utf8");
+    console.log("HTML report saved to", this.out);
   }
 }
