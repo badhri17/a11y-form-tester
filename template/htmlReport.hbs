@@ -3,35 +3,177 @@
     <meta charset="utf-8" />
     <title>A11y‑Form‑Tester Report</title>
     <style>
-      body{font-family:sans-serif;max-width:900px;margin:2rem auto;padding:0
-      1rem} h2{margin-top:2rem} .page{border-bottom:1px solid #ccc;padding:1rem
-      0} .violation{margin-left:1rem} .fail{color:#d00}
+      body {
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+        background: #f7f9fa;
+        color: #222;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 900px;
+        margin: 2.5rem auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        padding: 2.5rem 2rem 2rem 2rem;
+      }
+      h1 {
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: #2d3a4a;
+        margin-bottom: 2rem;
+        letter-spacing: -1px;
+        text-align: center;
+      }
+      h2 {
+        font-size: 1.3rem;
+        color: #1a6ed8;
+        margin: 0 0 0.5rem 0;
+        font-weight: 600;
+      }
+      .page {
+        margin-bottom: 2.5rem;
+        padding: 1.5rem 1rem 1.5rem 1rem;
+        border-radius: 8px;
+        background: #f4f8fb;
+        border: 1px solid #e3e8ee;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      }
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.2rem;
+      }
+      .page-header h2 {
+        margin: 0;
+      }
+      .fail {
+        color: #fff;
+        background: #e74c3c;
+        font-weight: 600;
+        padding: 0.25em 0.9em;
+        border-radius: 16px;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        box-shadow: 0 1px 2px rgba(231,76,60,0.08);
+      }
+      .success {
+        color: #fff;
+        background: #27ae60;
+        font-weight: 600;
+        padding: 0.25em 0.9em;
+        border-radius: 16px;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        box-shadow: 0 1px 2px rgba(39,174,96,0.08);
+      }
+      ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+      }
+      .rule {
+        margin-bottom: 1.5rem;
+        padding: 1rem 1.2rem;
+        background: #fff;
+        border: 1px solid #e1e6eb;
+        border-radius: 7px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        transition: box-shadow 0.2s;
+      }
+      .rule:hover {
+        box-shadow: 0 2px 8px rgba(26,110,216,0.07);
+      }
+      .rule > strong {
+        font-size: 1.08em;
+        color: #2d3a4a;
+      }
+      .rule > span {
+        font-style: italic;
+        color: #888;
+        margin-left: 0.7em;
+        font-size: 0.98em;
+      }
+      .rule ul {
+        margin-top: 0.7rem;
+        padding-left: 1.2rem;
+        border-left: 3px solid #e1e6eb;
+      }
+      .node {
+        margin-bottom: 1rem;
+        padding: 0.7rem 0.8rem;
+        background: #f8fafc;
+        border: 1px dashed #c8d6e5;
+        border-radius: 5px;
+      }
+      .node code {
+        display: block;
+        background: #f1f3f6;
+        color: #2d3a4a;
+        padding: 0.5em 0.7em;
+        border-radius: 4px;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        font-size: 0.98em;
+        white-space: pre-wrap;
+        word-break: break-all;
+        margin-bottom: 0.3em;
+      }
+      .node small {
+        display: block;
+        margin-top: 0.15rem;
+        color: #7b8a99;
+        font-size: 0.93em;
+      }
+      .no-violations {
+        color: #27ae60;
+        font-style: italic;
+        font-size: 1.1em;
+        margin: 1.5rem 0 0.5rem 0;
+        text-align: center;
+      }
+      @media (max-width: 600px) {
+        .container { padding: 1rem; }
+        .page { padding: 1rem 0.5rem; }
+      }
     </style>
   </head>
   <body>
-    <h1>Accessibility Scan</h1>
-    {{#each pages}}
-      <div class="page">
-        <h2>{{file}}
-          –
-          <span class="fail">{{violations.length}} issues</span></h2>
-        <ul>
-          {{#each violations}}
-            <li class="rule"><strong>{{id}}</strong>
-              ({{impact}})
-              <ul>
-                {{#each nodes}}
-                  <li class="node">
-                    <code>{{{this.html}}}</code><br />
-                    <small>{{this.target}}</small>
-                  </li>
-                {{/each}}
-              </ul>
-            </li>
-          {{/each}}
-        </ul>
-
-      </div>
-    {{/each}}
+    <div class="container">
+      <h1>Accessibility Scan Report</h1>
+      {{#each pages}}
+        <div class="page">
+          <div class="page-header">
+            <h2>{{file}}</h2>
+            {{#if violations.length}}
+              <span class="fail">{{violations.length}} issues</span>
+            {{else}}
+              <span class="success">No issues</span>
+            {{/if}}
+          </div>
+          {{#if violations.length}}
+          <ul>
+            {{#each violations}}
+              <li class="rule">
+                <strong>{{id}}</strong>
+                <span>({{impact}})</span>
+                <ul>
+                  {{#each nodes}}
+                    <li class="node">
+                      <code>{{{this.html}}}</code>
+                      <small>Target: {{this.target}}</small>
+                    </li>
+                  {{/each}}
+                </ul>
+              </li>
+            {{/each}}
+          </ul>
+          {{else}}
+            <p class="no-violations">No accessibility violations found for this page.</p>
+          {{/if}}
+        </div>
+      {{/each}}
+    </div>
   </body>
 </html>

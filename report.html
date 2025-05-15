@@ -3,193 +3,331 @@
     <meta charset="utf-8" />
     <title>A11y‑Form‑Tester Report</title>
     <style>
-      body{font-family:sans-serif;max-width:900px;margin:2rem auto;padding:0
-      1rem} h2{margin-top:2rem} .page{border-bottom:1px solid #ccc;padding:1rem
-      0} .violation{margin-left:1rem} .fail{color:#d00}
+      body {
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+        background: #f7f9fa;
+        color: #222;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 900px;
+        margin: 2.5rem auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        padding: 2.5rem 2rem 2rem 2rem;
+      }
+      h1 {
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: #2d3a4a;
+        margin-bottom: 2rem;
+        letter-spacing: -1px;
+        text-align: center;
+      }
+      h2 {
+        font-size: 1.3rem;
+        color: #1a6ed8;
+        margin: 0 0 0.5rem 0;
+        font-weight: 600;
+      }
+      .page {
+        margin-bottom: 2.5rem;
+        padding: 1.5rem 1rem 1.5rem 1rem;
+        border-radius: 8px;
+        background: #f4f8fb;
+        border: 1px solid #e3e8ee;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      }
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.2rem;
+      }
+      .page-header h2 {
+        margin: 0;
+      }
+      .fail {
+        color: #fff;
+        background: #e74c3c;
+        font-weight: 600;
+        padding: 0.25em 0.9em;
+        border-radius: 16px;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        box-shadow: 0 1px 2px rgba(231,76,60,0.08);
+      }
+      .success {
+        color: #fff;
+        background: #27ae60;
+        font-weight: 600;
+        padding: 0.25em 0.9em;
+        border-radius: 16px;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        box-shadow: 0 1px 2px rgba(39,174,96,0.08);
+      }
+      ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+      }
+      .rule {
+        margin-bottom: 1.5rem;
+        padding: 1rem 1.2rem;
+        background: #fff;
+        border: 1px solid #e1e6eb;
+        border-radius: 7px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        transition: box-shadow 0.2s;
+      }
+      .rule:hover {
+        box-shadow: 0 2px 8px rgba(26,110,216,0.07);
+      }
+      .rule > strong {
+        font-size: 1.08em;
+        color: #2d3a4a;
+      }
+      .rule > span {
+        font-style: italic;
+        color: #888;
+        margin-left: 0.7em;
+        font-size: 0.98em;
+      }
+      .rule ul {
+        margin-top: 0.7rem;
+        padding-left: 1.2rem;
+        border-left: 3px solid #e1e6eb;
+      }
+      .node {
+        margin-bottom: 1rem;
+        padding: 0.7rem 0.8rem;
+        background: #f8fafc;
+        border: 1px dashed #c8d6e5;
+        border-radius: 5px;
+      }
+      .node code {
+        display: block;
+        background: #f1f3f6;
+        color: #2d3a4a;
+        padding: 0.5em 0.7em;
+        border-radius: 4px;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        font-size: 0.98em;
+        white-space: pre-wrap;
+        word-break: break-all;
+        margin-bottom: 0.3em;
+      }
+      .node small {
+        display: block;
+        margin-top: 0.15rem;
+        color: #7b8a99;
+        font-size: 0.93em;
+      }
+      .no-violations {
+        color: #27ae60;
+        font-style: italic;
+        font-size: 1.1em;
+        margin: 1.5rem 0 0.5rem 0;
+        text-align: center;
+      }
+      @media (max-width: 600px) {
+        .container { padding: 1rem; }
+        .page { padding: 1rem 0.5rem; }
+      }
     </style>
   </head>
   <body>
-    <h1>Accessibility Scan</h1>
-      <div class="page">
-        <h2>test/fixtures/interactive-bad-autocomplete.html
-          –
-          <span class="fail">1 issues</span></h2>
-        <ul>
-            <li class="rule"><strong>autocomplete-valid</strong>
-              (serious)
-              <ul>
-                  <li class="node">
-                    <code><input id="vat" autocomplete="tax-id" required=""></code><br />
-                    <small>#vat</small>
-                  </li>
-              </ul>
-            </li>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/interactive-button-no-name.html
-          –
-          <span class="fail">1 issues</span></h2>
-        <ul>
-            <li class="rule"><strong>button-name</strong>
-              (critical)
-              <ul>
-                  <li class="node">
-                    <code><button class="fab">
+    <div class="container">
+      <h1>Accessibility Scan Report</h1>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-bad-autocomplete.html</h2>
+              <span class="fail">1 issues</span>
+          </div>
+          <ul>
+              <li class="rule">
+                <strong>autocomplete-valid</strong>
+                <span>(serious)</span>
+                <ul>
+                    <li class="node">
+                      <code><input id="vat" autocomplete="tax-id" required=""></code>
+                      <small>Target: #vat</small>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-button-no-name.html</h2>
+              <span class="fail">1 issues</span>
+          </div>
+          <ul>
+              <li class="rule">
+                <strong>button-name</strong>
+                <span>(critical)</span>
+                <ul>
+                    <li class="node">
+                      <code><button class="fab">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2"></path>
         </svg>
-      </button></code><br />
-                    <small>.fab</small>
-                  </li>
-              </ul>
-            </li>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/interactive-contrast-fail.html
-          –
-          <span class="fail">1 issues</span></h2>
-        <ul>
-            <li class="rule"><strong>color-contrast</strong>
-              (serious)
-              <ul>
-                  <li class="node">
-                    <code><div id="erremail" class="error">
+      </button></code>
+                      <small>Target: .fab</small>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-contrast-fail.html</h2>
+              <span class="fail">1 issues</span>
+          </div>
+          <ul>
+              <li class="rule">
+                <strong>color-contrast</strong>
+                <span>(serious)</span>
+                <ul>
+                    <li class="node">
+                      <code><div id="erremail" class="error">
     Please enter a valid email address
-  </div></code><br />
-                    <small>#erremail</small>
-                  </li>
-              </ul>
-            </li>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/interactive-dialog-no-name.html
-          –
-          <span class="fail">1 issues</span></h2>
-        <ul>
-            <li class="rule"><strong>aria-dialog-name</strong>
-              (serious)
-              <ul>
-                  <li class="node">
-                    <code><div id="modal" role="dialog">
+  </div></code>
+                      <small>Target: #erremail</small>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-dialog-no-name.html</h2>
+              <span class="fail">1 issues</span>
+          </div>
+          <ul>
+              <li class="rule">
+                <strong>aria-dialog-name</strong>
+                <span>(serious)</span>
+                <ul>
+                    <li class="node">
+                      <code><div id="modal" role="dialog">
     <div class="panel">
       <button data-close="">×</button>
       <h2>Login</h2>
       <label>Email <input type="email" required=""></label><br>
       <label>Password <input type="password" required=""></label><br>
       <button>Submit</button>
-    </div></div></code><br />
-                    <small>#modal</small>
-                  </li>
-              </ul>
-            </li>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/interactive-duplicate-id.html
-          –
-          <span class="fail">1 issues</span></h2>
-        <ul>
-            <li class="rule"><strong>duplicate-id</strong>
-              (minor)
-              <ul>
-                  <li class="node">
-                    <code><div class="field" id="primary-phone-block">
+    </div></div></code>
+                      <small>Target: #modal</small>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-duplicate-id.html</h2>
+              <span class="fail">1 issues</span>
+          </div>
+          <ul>
+              <li class="rule">
+                <strong>duplicate-id</strong>
+                <span>(minor)</span>
+                <ul>
+                    <li class="node">
+                      <code><div class="field" id="primary-phone-block">
     <label for="phone">Primary phone</label>
     <input id="phone" name="phone" type="tel" required="">
-  </div></code><br />
-                    <small>#profile &gt; .field:nth-child(1)</small>
-                  </li>
-              </ul>
-            </li>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/interactive-fail.html
-          –
-          <span class="fail">0 issues</span></h2>
-        <ul>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/interactive-referral-title.html
-          –
-          <span class="fail">1 issues</span></h2>
-        <ul>
-            <li class="rule"><strong>label-title-only</strong>
-              (serious)
-              <ul>
-                  <li class="node">
-                    <code><input id="ref" title="Referral code" required="" placeholder="Enter code"></code><br />
-                    <small>#ref</small>
-                  </li>
-              </ul>
-            </li>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/interactive-revealed-field.html
-          –
-          <span class="fail">0 issues</span></h2>
-        <ul>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/interactive-select-no-label.html
-          –
-          <span class="fail">1 issues</span></h2>
-        <ul>
-            <li class="rule"><strong>select-name</strong>
-              (critical)
-              <ul>
-                  <li class="node">
-                    <code><select id="country" required="">
+  </div></code>
+                      <small>Target: #profile &gt; .field:nth-child(1)</small>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-fail.html</h2>
+              <span class="success">No issues</span>
+          </div>
+            <p class="no-violations">No accessibility violations found for this page.</p>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-referral-title.html</h2>
+              <span class="fail">1 issues</span>
+          </div>
+          <ul>
+              <li class="rule">
+                <strong>label-title-only</strong>
+                <span>(serious)</span>
+                <ul>
+                    <li class="node">
+                      <code><input id="ref" title="Referral code" required=""></code>
+                      <small>Target: #ref</small>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-revealed-field.html</h2>
+              <span class="success">No issues</span>
+          </div>
+            <p class="no-violations">No accessibility violations found for this page.</p>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/interactive-select-no-label.html</h2>
+              <span class="fail">1 issues</span>
+          </div>
+          <ul>
+              <li class="rule">
+                <strong>select-name</strong>
+                <span>(critical)</span>
+                <ul>
+                    <li class="node">
+                      <code><select id="country" required="">
       <option value="">Choose country…</option>
       <option>Saudi Arabia</option>
       <option>United States</option>
       <option>China</option>
-    </select></code><br />
-                    <small>#country</small>
-                  </li>
-              </ul>
-            </li>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/login.html
-          –
-          <span class="fail">1 issues</span></h2>
-        <ul>
-            <li class="rule"><strong>label</strong>
-              (critical)
-              <ul>
-                  <li class="node">
-                    <code><input type="password" id="pw"></code><br />
-                    <small>#pw</small>
-                  </li>
-              </ul>
-            </li>
-        </ul>
-
-      </div>
-      <div class="page">
-        <h2>test/fixtures/signup.html
-          –
-          <span class="fail">0 issues</span></h2>
-        <ul>
-        </ul>
-
-      </div>
+    </select></code>
+                      <small>Target: #country</small>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/login.html</h2>
+              <span class="fail">1 issues</span>
+          </div>
+          <ul>
+              <li class="rule">
+                <strong>label</strong>
+                <span>(critical)</span>
+                <ul>
+                    <li class="node">
+                      <code><input type="password" id="pw"></code>
+                      <small>Target: #pw</small>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+        </div>
+        <div class="page">
+          <div class="page-header">
+            <h2>test/fixtures/signup.html</h2>
+              <span class="success">No issues</span>
+          </div>
+            <p class="no-violations">No accessibility violations found for this page.</p>
+        </div>
+    </div>
   </body>
 </html>
