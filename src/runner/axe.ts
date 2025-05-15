@@ -17,10 +17,18 @@ const formRelatedRules = [
   "button-name",
 ];
 
-export async function axeScan(page: Page) {
-  const results = await new AxeBuilder({ page })
-    .withRules(formRelatedRules)
-    .analyze();
+export async function axeScan(page: Page, options?: { rules?: string }) {
+  const axeBuilder = new AxeBuilder({ page });
   
+  // If custom rules are provided via CLI, use those
+  // Otherwise use our curated form-related rules
+  if (options?.rules) {
+    const customRules = options.rules.split(',').map(rule => rule.trim());
+    axeBuilder.withRules(customRules);
+  } else {
+    axeBuilder.withRules(formRelatedRules);
+  }
+  
+  const results = await axeBuilder.analyze();
   return results;
 }

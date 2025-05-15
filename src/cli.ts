@@ -7,7 +7,8 @@ program
   .description("Scan forms with Playwright + aXe and interactive scenarios")
   .argument("<glob...>", "Files or URLs to audit")
   .option("-r, --report <html>", "Generate HTML report at given path")
-  .option("-m, --max <number>", "Fail only when more than <number> violations", "0") // Add the max option
+  .option("-m, --max <number>", "Fail only when more than <number> violations", "0")
+  .option("--rules <list>", "Comma-separated axe rule IDs to run")
   .parse();
 
 const opts = program.opts();

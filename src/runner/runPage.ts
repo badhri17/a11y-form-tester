@@ -23,8 +23,23 @@ export interface ScanResult {
   violations: AxeViolation[];
 }
 
-export async function runAll(patterns: string[], opts: { report?: string }) {
-  const targets = await fg(patterns, { onlyFiles: false });
+export async function runAll(files: string[], options: {
+  report?: string;
+  max?: string;
+  rules?: string;
+}) {
+  // Parse the rules if provided
+  const runOptions: any = {};
+  
+  if (options.rules) {
+    const rulesList = options.rules.split(',').map(rule => rule.trim());
+    runOptions.runOnly = {
+      type: 'rule',
+      values: rulesList
+    };
+  }
+  
+  const targets = await fg(files, { onlyFiles: false });
   const browser = await getBrowser();
   const context = await browser.newContext();
 
@@ -38,13 +53,13 @@ export async function runAll(patterns: string[], opts: { report?: string }) {
     const merged: AxeViolation[] = [];
 
     // 1. Static pass
-    const staticRes = await axeScan(page);
+    const staticRes = await axeScan(page, { rules: options.rules });
     merged.push(...staticRes.violations);
 
     // 2. Interactive passes (each scenario may mutate DOM)
     for (const scenario of scenarios) {
       await scenario(page);
-      const res = await axeScan(page);
+      const res = await axeScan(page, { rules: options.rules });
       merged.push(...res.violations);
     }
 
