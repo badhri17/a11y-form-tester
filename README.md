@@ -1,113 +1,136 @@
 # a11y-form-tester
 
-**a11y-form-tester** is a command-line tool for automated accessibility (a11y) testing of web forms using Playwright and axe-core. It focuses on detecting WCAG issues that impact form interaction and understanding, supporting both static and interactive scenarios.
+![CI](https://github.com/badhri17/a11-form-tester/actions/workflows/ci.yml/badge.svg)
+[![npm](https://img.shields.io/npm/v/a11y-form-tester)](https://www.npmjs.com/package/a11y-form-tester)
+
+> **Interactive accessibility testing for real-world forms**  
+> Runs axe-core *after* the clicks, key-presses and dynamic DOM changes your users actually make.
 
 ---
 
-## Features
+## Why not just run a static linter?
 
-- **Opinionated Form Testing**: Targets accessibility issues specific to forms.
-- **Zero-config**: Works out-of-the-box with a single command.
-- **Interactive Scenarios**: Simulates user actions (e.g., submitting forms, toggling checkboxes).
-- **Multiple Reporters**: Outputs results to the console and optionally as a beautiful HTML report.
-- **Extensible**: Add new reporters, scenarios, or rule packs as plugins.
-- **Automated**: Designed for CI/CD and local development workflows.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- **Node.js** 18 or higher
-- **pnpm** (or npm)
-
-### Installation
-
-You can use `npx` (no install required):
-
-```sh
-npx a11y-form-tester <glob>
-```
-
-Or clone and run locally:
-
-```sh
-git clone https://github.com/your-org/a11y-form-tester.git
-cd a11y-form-tester
-pnpm install
-pnpm dev
-```
+| Static axe / Lighthouse | a11y-form-tester |
+|-------------------------|------------------|
+| Scans the HTML that exists on first paint | Re-runs axe **after each scenario** (fill, submit, tab-loop, open-modal…) |
+| Misses fields that are revealed later | Catches missing labels, duplicate IDs, modal issues, bad autocomplete tokens, etc. |
+| No keyboard interaction | Simulates Tab navigation to surface focus-order defects |
 
 ---
 
-## Usage
+## Key features
 
-```sh
-pnpm exec tsx src/cli.ts <glob> [options]
-```
-
-- `<glob>`: One or more file globs or URLs to audit (e.g., `test/fixtures/*.html`)
-- `-r, --report <html>`: Generate an HTML report at the given path
-
-**Example:**
-
-```sh
-pnpm exec tsx src/cli.ts test/fixtures/*.html --report report.html
-```
+* **Plug-and-play CLI** – `npx a11y-form-tester "dist/**/*.html"`
+* **Scenario engine**  
+  * static scan → *submit form* → dynamic scan  
+  * auto-fill required fields  
+  * tab-loop for focus-trap checks  
+  * open modals / dialogs
+* **Deduplicated report** – one line per unique rule + element
+* **Zero config CI** – exits `1` when violations are found
+* **Type-safe** – written in TypeScript, published with `.d.ts`
 
 ---
 
-## Project Structure
+## CLI usage
 
+```bash
+a11y-form-tester "<glob/of/pages/**/*.html>" [options]
+
+Options
+  --report <file>   Save pretty HTML report to the given path
+  --max <n>         Fail only when more than <n> violations (default: 0)
+  --rules <list>    Comma-separated axe rule IDs to run (defaults to smart subset)
 ```
-src/
-  runner/         # Playwright & Axe orchestration
-  reporters/      # Console / HTML / ... plugins
-  utils/          # Stateless helpers
-template/         # Handlebars templates for HTML reports
-test/             # Unit and fixture tests
+
+Example:
+
+```bash
+npx a11y-form-tester "build/**/*.html" --report a11y.html
 ```
+
+The CLI prints a coloured table and writes `a11y.html` next to your artefacts.
 
 ---
 
-## Development
+## Real-world bugs it finds
 
-- **Run Dev**: `pnpm dev`
-- **Run Tests**: `pnpm test`
-- **HTML Report**: Generated with `--report <path>`, uses Handlebars templates and custom CSS.
+| Scenario (ships in repo)                                         | Rule triggered       | Why static scan misses it           |
+| ---------------------------------------------------------------- | -------------------- | ----------------------------------- |
+| **Coupon code** `<select>` appears after checkbox – has no label | `select-name`        | Field not in initial DOM            |
+| **Dialog** injected by JavaScript lacks accessible name          | `aria-dialog-name`   | Dialog exists only after click      |
+| **VAT ID** field revealed with invalid `autocomplete="tax-id"`   | `autocomplete-valid` | Attribute not validated until shown |
+| **Clone phone field** duplicates `id="phone"`                    | `duplicate-id`       | Clone added after checkbox          |
+| **Icon-only "help" button** injected later                       | `button-name`        | No accessible name                  |
+| **Referral input** relies only on `title`                        | `label-title-only`   | Field hidden until user action      |
+| **Error message** with poor color contrast                       | `color-contrast`     | Error shown only after validation   |
+| **Password field** missing label                                 | `label`              | Basic but common oversight          |
+
+All eight fixtures live under `test/fixtures/` for you to try.
+
+---
+
+## Add to CI in 15 seconds (GitHub Actions)
+
+```yaml
+# .github/workflows/a11y.yml
+name: a11y
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with: { version: 8 }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpx a11y-form-tester "dist/**/*.html"
+```
+
+Green build = zero violations.
+
+---
+
+## Configuration
+
+Create **`a11y-form-tester.config.json`** in project root (optional):
+
+```jsonc
+{
+  "rules": ["label", "select-name", "autocomplete-valid"],
+  "max": 5,
+}
+```
 
 ---
 
 ## Contributing
 
-See [Project Rules & Conventions](./Project%20Rules%20%26%20Conventions.md) for coding standards, branching, and commit guidelines.
+PRs & issues are welcome! Here are some areas and suggestions I am looking to improve:
 
-- PRs should pass all tests and CI.
-- Add or update unit tests for new features or bug fixes.
-- Keep the codebase focused on form-related accessibility.
+* **Unit Tests** - Help us reach better coverage for:
+  * CLI argument processing
+  * HTML report generation
+  * Axe rule configuration
 
----
+* **New Scenarios** - Add more test scenarios in `src/runner/scenarios/`:
+  * Current scenarios include form submission, tab navigation, autofill, and modal opening
+  * We need scenarios for hover interactions, drag-and-drop, custom form controls, etc.
+  * Each scenario should be a simple async function that manipulates the page
 
+* **New Features** - Priority items:
+  * Config file support for project-specific settings
+  * Additional reporter formats (JUnit XML, JSON)
+  * Support for more axe rules (custom rule packs)
+ 
 ## License
 
 MIT
 
 ---
 
-## Maintainers
+## ☕ Buy me a coffee
 
-| GitHub handle       | Role            |
-| ------------------- | --------------- |
-| **@your‑name‑here** | Lead maintainer |
+[![Buy Me A Coffee](https://img.shields.io/badge/-buy%20me%20a%20coffee-FFDD00?logo=buy-me-a-coffee\&logoColor=black\&style=for-the-badge)](https://www.buymeacoffee.com/badhri)
 
----
-
-## Acknowledgements
-
-- [axe-core](https://github.com/dequelabs/axe-core)
-- [Playwright](https://github.com/microsoft/playwright)
-- [Commander](https://github.com/tj/commander.js)
-- [Handlebars](https://handlebarsjs.com/)
-
----
