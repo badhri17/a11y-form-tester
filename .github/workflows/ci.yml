@@ -37,12 +37,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
-        with: { version: 8 }
+        with:
+          version: 8
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm build
-
-      # ---------- Run compiled CLI against demo fixtures ----------
+      
+      # Install Playwright browser
+      - name: Install Playwright Browsers
+        run: pnpx playwright install --with-deps chromium
+      
+      # Run CLI against fixtures
       - name: Run a11y-form-tester on fixtures
-        run: |
-          node bin/a11y-form-tester.cjs "test/fixtures/*.html"
+        run: node bin/a11y-form-tester.cjs "test/fixtures/*.html"
+
+
 
