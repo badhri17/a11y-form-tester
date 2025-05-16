@@ -23,7 +23,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-
 
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --no-frozen-lockfile
 
       # ---------- Build library ----------
       - run: pnpm build
