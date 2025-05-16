@@ -1,6 +1,6 @@
 # a11y-form-tester
 
-![CI](https://github.com/badhri17/a11-form-tester/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/badhri17/a11y-form-tester/actions/workflows/ci.yml/badge.svg)
 [![npm](https://img.shields.io/npm/v/a11y-form-tester)](https://www.npmjs.com/package/a11y-form-tester)
 
 > **Interactive accessibility testing for real-world forms**  
