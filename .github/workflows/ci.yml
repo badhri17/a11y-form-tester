@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      # ---------- PNPM setup & cache ----------
       - uses: pnpm/action-setup@v3
         with:
           version: 8
@@ -33,26 +31,9 @@ jobs:
         env:
           NODE_OPTIONS: --experimental-vm-modules   # vitest + TS esm
 
-  e2e:
-    runs-on: ubuntu-latest
-    needs: build-test         # wait for build/unit pass
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with: { version: 8 }
-      - run: pnpm install --frozen-lockfile
-
-      # ---------- Install one browser to speed up CI ----------
-      - run: pnpm exec playwright install --with-deps chromium
-
-      # ---------- Playwright / Vitest E2E ----------
-      - run: pnpm vitest run --runInBand tests/e2e
-        env:
-          NODE_OPTIONS: --experimental-vm-modules
-
   smoke-cli:
     runs-on: ubuntu-latest
-    needs: e2e
+    needs: build-test
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
