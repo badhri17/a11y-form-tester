@@ -44,5 +44,5 @@ jobs:
       # ---------- Run compiled CLI against demo fixtures ----------
       - name: Run a11y-form-tester on fixtures
         run: |
-          node bin/a11y-form-tester.js "test/fixtures/*.html"
+          node bin/a11y-form-tester.cjs "test/fixtures/*.html"
 
