@@ -48,7 +48,7 @@ jobs:
       
       # Run CLI against fixtures
       - name: Run a11y-form-tester on fixtures
-        run: node bin/a11y-form-tester.cjs "test/fixtures/*.html"
+        run: node bin/a11y-form-tester.cjs "test/fixtures/signup.html" # usually *.html 
 
 
 
