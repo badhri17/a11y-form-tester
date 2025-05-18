@@ -10,13 +10,17 @@
   "exports": {
     ".": "./dist/cli.mjs"
   },
+  "files": [
+  "dist",
+  "bin"
+],
   "scripts": {
     "build": "tsup",
     "dev": "tsx src/cli.ts test/fixtures/*.html --report report.html",
     "test": "vitest run"
   },
   "keywords": [],
-  "author": "",
+  "author": "badhri17",
   "license": "MIT",
   "dependencies": {
     "@axe-core/playwright": "^4.10.1",
